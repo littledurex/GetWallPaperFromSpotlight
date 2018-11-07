@@ -4,7 +4,7 @@
 import os
 import os.path
 import shutil
-from PIL import Image  
+from PIL import Image
 
 
 
@@ -14,6 +14,9 @@ print(wallpaper_folder)
 
 #获取存放到onedrive的路径
 save_folder  = os.getenv('onedrive')+('\图片\Spotlight')
+save_folder_CopyAssets  = os.getenv('onedrive')+('\图片\Spotlight\CopyAssets')
+save_folder_Horizontals  = os.getenv('onedrive')+('\图片\Spotlight\Horizontal')
+save_folder_Vertical  = os.getenv('onedrive')+('\图片\Spotlight\Vertical')
 print(save_folder )
 
 
@@ -39,7 +42,22 @@ for wallpaper in wallpapers:
  print('Save wallpaper ' + save_path)
 
 wallpapers = os.listdir(save_folder)
+
+#遍历文件并把对应的分辨率放到文件夹中
 for wallpaper in wallpapers:
-    img = Image.open(wallpaper)
-    print img.size
-    print img.format 
+     if wallpaper.endswith(".jpg"): 
+        save_path = os.path.join(save_folder, wallpaper)
+        print(save_path)
+        img = Image.open(save_path)
+        if img.size[0] >= 1920:
+             save_path_Horizontals = os.path.join(save_folder_Horizontals, wallpaper)
+             img.close()
+             shutil.move(save_path,save_path_Horizontals)
+        elif  img.size[0] >= 1080:
+             save_path_Vertical = os.path.join(save_folder_Vertical, wallpaper)
+             img.close()
+             shutil.move(save_path,save_path_Vertical)
+        else:
+            img.close()
+            os.remove(save_path)
+
