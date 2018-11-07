@@ -10,14 +10,29 @@ from PIL import Image
 
 #获取聚焦图片路径
 wallpaper_folder = os.getenv('LOCALAPPDATA')+ ('\Packages\Microsoft.Windows.ContentDeliveryManager_cw5n1h2txyewy\LocalState\Assets')
-print(wallpaper_folder)
+#print(wallpaper_folder)
 
 #获取存放到onedrive的路径
+
 save_folder  = os.getenv('onedrive')+('\图片\Spotlight')
-save_folder_CopyAssets  = os.getenv('onedrive')+('\图片\Spotlight\CopyAssets')
 save_folder_Horizontals  = os.getenv('onedrive')+('\图片\Spotlight\Horizontal')
 save_folder_Vertical  = os.getenv('onedrive')+('\图片\Spotlight\Vertical')
-print(save_folder )
+#save_folder_CopyAssets  = os.getenv('onedrive')+('\图片\Spotlight\CopyAssets')
+
+if not (os.path.exists(save_folder)):
+    os.makedirs(save_folder)
+
+if not (os.path.exists(save_folder_Horizontals)):
+    os.makedirs(save_folder_Horizontals)
+
+if not (os.path.exists(save_folder_Vertical)):
+    os.makedirs(save_folder_Vertical)
+
+#if not (os.path.exists(save_folder_CopyAssets)):
+    os.makedirs(save_folder_CopyAssets)
+
+
+#print(save_folder )
 
 
 #列出所有的文件
@@ -39,15 +54,14 @@ for wallpaper in wallpapers:
 
  shutil.copyfile(wallpaper_path, save_path)
 
- print('Save wallpaper ' + save_path)
+# print('Save wallpaper ' + save_path)
 
 wallpapers = os.listdir(save_folder)
 
-#遍历文件并把对应的分辨率放到文件夹中
 for wallpaper in wallpapers:
      if wallpaper.endswith(".jpg"): 
         save_path = os.path.join(save_folder, wallpaper)
-        print(save_path)
+#        print(save_path)
         img = Image.open(save_path)
         if img.size[0] >= 1920:
              save_path_Horizontals = os.path.join(save_folder_Horizontals, wallpaper)
@@ -60,4 +74,3 @@ for wallpaper in wallpapers:
         else:
             img.close()
             os.remove(save_path)
-
