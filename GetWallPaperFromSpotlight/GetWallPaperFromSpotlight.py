@@ -4,7 +4,41 @@
 import os
 import os.path
 import shutil
+import win32gui
+import win32con
+import win32api
 from PIL import Image
+
+
+def setWallpaper(imagepath):
+    #打开指定注册表路径
+    k = win32api.RegOpenKeyEx(win32con.HKEY_CURRENT_USER,"Control Panel\\Desktop",0,win32con.KEY_SET_VALUE) 
+    #最后的参数:2拉伸,0居中,6适应,10填充,0平铺
+    win32api.RegSetValueEx(k, "WallpaperStyle", 0, win32con.REG_SZ, "10")
+    #最后的参数:1表示平铺,拉伸居中等都是0
+    win32api.RegSetValueEx(k, "TileWallpaper", 0, win32con.REG_SZ, "0")
+    #刷新桌面
+    win32gui.SystemParametersInfo(win32con.SPI_SETDESKWALLPAPER, imagepath, win32con.SPIF_SENDWININICHANGE)
+    
+
+
+def listdir(path, list_name): #传入存储的list
+ for file in os.listdir(path):
+  file_path = os.path.join(path, file)
+  if os.path.isdir(file_path): #如果是目录，则递归执行该方法
+   listdir(file_path, list_name)
+  else:
+    list_name.append((file_path,os.path.getctime(file_path))) #把文件路径，文件创建时间加入list中
+
+def newestfile(target_list): #传入包含文件路径，文件创建时间的list
+ newest_file = target_list[0] #冒泡算法找出时间最大的
+ for i in range(len(target_list)):
+  if i < (len(target_list)-1) and newest_file[1] < target_list[i+1][1]:
+   newest_file = target_list[i+1]
+  else:
+   continue
+#print('newest file is',newest_file)
+ return newest_file
 
 
 
@@ -74,3 +108,10 @@ for wallpaper in wallpapers:
         else:
             img.close()
             os.remove(save_path)
+
+# 设置壁纸
+list = []
+listdir(save_folder_Horizontals, list)
+new_file = newestfile(list)
+print('from:', new_file[0])
+setWallpaper(new_file[0])
