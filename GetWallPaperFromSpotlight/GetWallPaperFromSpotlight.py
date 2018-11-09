@@ -86,6 +86,8 @@ for wallpaper in wallpapers:
 
  save_path = os.path.join(save_folder, wallpaper_name)
 
+ if (os.path.exists(os.path.join(save_folder_Horizontals, wallpaper_name))):
+     continue
  shutil.copyfile(wallpaper_path, save_path)
 
 # print('Save wallpaper ' + save_path)
@@ -113,5 +115,5 @@ for wallpaper in wallpapers:
 list = []
 listdir(save_folder_Horizontals, list)
 new_file = newestfile(list)
-print('from:', new_file[0])
+#print('from:', new_file[0])
 setWallpaper(new_file[0])

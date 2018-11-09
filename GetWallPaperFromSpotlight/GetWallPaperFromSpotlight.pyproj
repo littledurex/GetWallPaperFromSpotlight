@@ -11,6 +11,7 @@
     <OutputPath>.</OutputPath>
     <Name>GetWallPaperFromSpotlight</Name>
     <RootNamespace>GetWallPaperFromSpotlight</RootNamespace>
+    <IsWindowsApplication>False</IsWindowsApplication>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
